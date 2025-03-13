@@ -22,9 +22,17 @@ module.exports = (pool) => {
       
       if (search) {
         query = `
-          SELECT * FROM ecommerce.products 
-          WHERE name ILIKE $1 OR description ILIKE $1
-          ORDER BY name
+          SELECT p.*, 
+                 c.name as category_name,
+                 (
+                   SELECT ARRAY_AGG(pi.image_url)
+                   FROM ecommerce.product_images pi
+                   WHERE pi.product_id = p.id
+                 ) as images
+          FROM ecommerce.products p
+          LEFT JOIN ecommerce.categories c ON p.category_id = c.id
+          WHERE p.name ILIKE $1 OR p.description ILIKE $1
+          ORDER BY p.name
           LIMIT $2 OFFSET $3
         `;
         queryParams = [`%${search}%`, limit, offset];
@@ -36,8 +44,16 @@ module.exports = (pool) => {
         countParams = [`%${search}%`];
       } else {
         query = `
-          SELECT * FROM ecommerce.products 
-          ORDER BY name
+          SELECT p.*, 
+                 c.name as category_name,
+                 (
+                   SELECT ARRAY_AGG(pi.image_url)
+                   FROM ecommerce.product_images pi
+                   WHERE pi.product_id = p.id
+                 ) as images
+          FROM ecommerce.products p
+          LEFT JOIN ecommerce.categories c ON p.category_id = c.id
+          ORDER BY p.name
           LIMIT $1 OFFSET $2
         `;
         queryParams = [limit, offset];
@@ -250,11 +266,29 @@ module.exports = (pool) => {
       let params;
       
       if (isUUID) {
-        query = 'SELECT * FROM ecommerce.products WHERE id = $1';
+        query = `
+          SELECT p.*, 
+                 c.name as category_name,
+                 ARRAY_AGG(DISTINCT pi.image_url) FILTER (WHERE pi.image_url IS NOT NULL) as images
+          FROM ecommerce.products p
+          LEFT JOIN ecommerce.categories c ON p.category_id = c.id
+          LEFT JOIN ecommerce.product_images pi ON p.id = pi.product_id
+          WHERE p.id = $1
+          GROUP BY p.id, c.name
+        `;
         params = [id];
       } else if (isNumeric) {
         // If it's a numeric ID, we'll try to find a product with that ID cast to int
-        query = 'SELECT * FROM ecommerce.products WHERE id::text = $1 OR CAST(id AS varchar) LIKE $2';
+        query = `
+          SELECT p.*, 
+                 c.name as category_name,
+                 ARRAY_AGG(DISTINCT pi.image_url) FILTER (WHERE pi.image_url IS NOT NULL) as images
+          FROM ecommerce.products p
+          LEFT JOIN ecommerce.categories c ON p.category_id = c.id
+          LEFT JOIN ecommerce.product_images pi ON p.id = pi.product_id
+          WHERE p.id::text = $1 OR CAST(p.id AS varchar) LIKE $2
+          GROUP BY p.id, c.name
+        `;
         params = [id, `%${id}%`];
       } else {
         return res.status(400).json({ message: 'Invalid product ID format' });
@@ -278,6 +312,7 @@ module.exports = (pool) => {
             price: 19.99,
             category: 'Sample',
             image_url: '/images/sample-product.jpg',
+            images: ['/images/sample-product.jpg'],
             created_at: new Date(),
             updated_at: new Date()
           };
@@ -300,6 +335,7 @@ module.exports = (pool) => {
           price: 24.99,
           category: 'Sample',
           image_url: '/images/sample-product.jpg',
+          images: ['/images/sample-product.jpg'],
           created_at: new Date(),
           updated_at: new Date()
         };

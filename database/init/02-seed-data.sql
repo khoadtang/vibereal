@@ -2,14 +2,14 @@
 SET search_path TO ecommerce, public;
 
 -- Insert warehouse data
-INSERT INTO warehouses (name, address, city, postal_code, country)
+INSERT INTO warehouses (id, name, address, city, postal_code, country)
 VALUES 
-    ('Main Warehouse', '123 Storage Blvd', 'Warehouseville', '12345', 'United States'),
-    ('East Coast Facility', '456 Shipping Lane', 'Logistics City', '67890', 'United States'),
-    ('West Coast Depot', '789 Inventory Road', 'Supply Town', '13579', 'United States');
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 'Main Warehouse', '123 Storage Blvd', 'Warehouseville', '12345', 'United States'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 'East Coast Facility', '456 Shipping Lane', 'Logistics City', '67890', 'United States'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 'West Coast Depot', '789 Inventory Road', 'Supply Town', '13579', 'United States');
 
 -- Insert categories (with hierarchical structure)
-INSERT INTO categories (id, name, description, parent_id)
+INSERT INTO categories (id, name, description, parent_category_id)
 VALUES 
     (1, 'Electronics', 'Electronic devices and gadgets', NULL),
     (2, 'Computers', 'Desktop and laptop computers', 1),
@@ -31,18 +31,18 @@ VALUES
     ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44', 'alicejones', 'alice.jones@example.com', 'password123', 'Alice', 'Jones', '321 Elm St', 'Nowhere', '24680', 'United States', '555-789-0123');
 
 -- Insert products (UUID generated for readability in this example)
-INSERT INTO products (id, name, description, price, stock_quantity, category_id, is_featured, sku, weight, dimensions, tags)
+INSERT INTO products (id, name, description, price, stock_quantity, category_id, is_featured, is_active, sku, weight, dimensions, tags)
 VALUES 
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'Laptop Pro X', 'High-performance laptop with 16GB RAM and 1TB SSD', 1299.99, 50, 2, TRUE, 'LP-X-001', 2.5, '15x10x1', ARRAY['laptop', 'computer', 'high-performance']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d480', 'Smartphone Galaxy', 'Latest smartphone with 128GB storage', 899.99, 100, 3, TRUE, 'SG-001', 0.3, '6x3x0.5', ARRAY['phone', 'smartphone', 'android']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d481', 'Wireless Headphones', 'Noise-cancelling wireless headphones', 199.99, 200, 4, TRUE, 'WH-001', 0.25, '8x8x4', ARRAY['headphones', 'wireless', 'audio']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 'Men''s Cotton T-Shirt', 'Comfortable 100% cotton t-shirt', 19.99, 500, 6, FALSE, 'MT-001', 0.2, NULL, ARRAY['clothing', 'men', 't-shirt']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d483', 'Women''s Dress', 'Elegant evening dress', 89.99, 75, 7, TRUE, 'WD-001', 0.5, NULL, ARRAY['clothing', 'women', 'dress']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d484', 'Coffee Maker', 'Programmable drip coffee maker', 49.99, 150, 8, FALSE, 'CM-001', 2.0, '10x10x15', ARRAY['appliance', 'kitchen', 'coffee']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d485', 'Office Chair', 'Ergonomic office chair with lumbar support', 149.99, 30, 9, FALSE, 'OC-001', 15.0, '25x25x45', ARRAY['furniture', 'chair', 'office']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d486', 'Programming Guide', 'Comprehensive guide to modern programming', 34.99, 100, 10, FALSE, 'BK-001', 1.0, '9x6x1.5', ARRAY['book', 'programming', 'educational']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d487', 'Tablet Pro', 'Lightweight tablet with 10-inch screen', 399.99, 80, 1, TRUE, 'TB-001', 0.5, '10x7x0.3', ARRAY['tablet', 'electronics']),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d488', 'Bluetooth Speaker', 'Portable Bluetooth speaker with 10-hour battery', 79.99, 120, 4, FALSE, 'BS-001', 0.75, '6x6x8', ARRAY['speaker', 'bluetooth', 'audio']);
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'Laptop Pro X', 'High-performance laptop with 16GB RAM and 1TB SSD', 1299.99, 50, 2, TRUE, TRUE, 'LP-X-001', 2.5, '15x10x1', ARRAY['laptop', 'computer', 'high-performance']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d480', 'Smartphone Galaxy', 'Latest smartphone with 128GB storage', 899.99, 100, 3, TRUE, TRUE, 'SG-001', 0.3, '6x3x0.5', ARRAY['phone', 'smartphone', 'android']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d481', 'Wireless Headphones', 'Noise-cancelling wireless headphones', 199.99, 200, 4, TRUE, TRUE, 'WH-001', 0.25, '8x8x4', ARRAY['headphones', 'wireless', 'audio']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 'Men''s Cotton T-Shirt', 'Comfortable 100% cotton t-shirt', 19.99, 500, 6, FALSE, TRUE, 'MT-001', 0.2, NULL, ARRAY['clothing', 'men', 't-shirt']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d483', 'Women''s Dress', 'Elegant evening dress', 89.99, 75, 7, TRUE, TRUE, 'WD-001', 0.5, NULL, ARRAY['clothing', 'women', 'dress']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d484', 'Coffee Maker', 'Programmable drip coffee maker', 49.99, 150, 8, FALSE, TRUE, 'CM-001', 2.0, '10x10x15', ARRAY['appliance', 'kitchen', 'coffee']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d485', 'Office Chair', 'Ergonomic office chair with lumbar support', 149.99, 30, 9, FALSE, TRUE, 'OC-001', 15.0, '25x25x45', ARRAY['furniture', 'chair', 'office']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d486', 'Programming Guide', 'Comprehensive guide to modern programming', 34.99, 100, 10, FALSE, TRUE, 'BK-001', 1.0, '9x6x1.5', ARRAY['book', 'programming', 'educational']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d487', 'Tablet Pro', 'Lightweight tablet with 10-inch screen', 399.99, 80, 1, TRUE, TRUE, 'TB-001', 0.5, '10x7x0.3', ARRAY['tablet', 'electronics']),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d488', 'Bluetooth Speaker', 'Portable Bluetooth speaker with 10-hour battery', 79.99, 120, 4, FALSE, TRUE, 'BS-001', 0.75, '6x6x8', ARRAY['speaker', 'bluetooth', 'audio']);
 
 -- Insert product images
 INSERT INTO product_images (product_id, image_url, is_primary)
@@ -62,44 +62,44 @@ VALUES
 -- Insert product inventory
 INSERT INTO product_inventory (product_id, warehouse_id, quantity)
 VALUES 
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 1, 30),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 2, 20),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d480', 1, 50),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d480', 2, 50),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d481', 1, 100),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d481', 3, 100),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 1, 200),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 2, 150),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 3, 150),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d483', 2, 75),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d484', 1, 75),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d484', 3, 75),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d485', 1, 15),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d485', 3, 15),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d486', 2, 50),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d486', 3, 50),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d487', 1, 40),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d487', 2, 40),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d488', 1, 60),
-    ('f47ac10b-58cc-4372-a567-0e02b2c3d488', 3, 60);
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 30),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 20),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d480', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 50),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d480', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 50),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d481', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 100),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d481', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 100),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 200),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 150),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d482', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 150),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d483', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 75),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d484', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 75),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d484', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 75),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d485', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 15),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d485', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 15),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d486', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 50),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d486', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 50),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d487', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 40),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d487', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a82', 40),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d488', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a81', 60),
+    ('f47ac10b-58cc-4372-a567-0e02b2c3d488', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a83', 60);
 
 -- Insert shopping carts
-INSERT INTO shopping_cart (user_id, session_id)
+INSERT INTO shopping_cart (id, user_id, session_id)
 VALUES 
-    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', NULL),
-    ('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', NULL),
-    (NULL, 'session123456789'),
-    (NULL, 'session987654321');
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a91', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', NULL),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a92', 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', NULL),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a93', NULL, 'session123456789'),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a94', NULL, 'session987654321');
 
 -- Insert cart items
 INSERT INTO cart_items (cart_id, product_id, quantity)
 VALUES 
-    (1, 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 1),
-    (1, 'f47ac10b-58cc-4372-a567-0e02b2c3d481', 2),
-    (2, 'f47ac10b-58cc-4372-a567-0e02b2c3d480', 1),
-    (3, 'f47ac10b-58cc-4372-a567-0e02b2c3d484', 1),
-    (3, 'f47ac10b-58cc-4372-a567-0e02b2c3d486', 1),
-    (4, 'f47ac10b-58cc-4372-a567-0e02b2c3d485', 1);
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a91', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 1),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a91', 'f47ac10b-58cc-4372-a567-0e02b2c3d481', 2),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a92', 'f47ac10b-58cc-4372-a567-0e02b2c3d480', 1),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a93', 'f47ac10b-58cc-4372-a567-0e02b2c3d484', 1),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a93', 'f47ac10b-58cc-4372-a567-0e02b2c3d486', 1),
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a94', 'f47ac10b-58cc-4372-a567-0e02b2c3d485', 1);
 
 -- Insert orders
 INSERT INTO orders (id, user_id, status, total_amount, shipping_address, shipping_city, shipping_postal_code, shipping_country, payment_method, payment_status)
@@ -133,9 +133,9 @@ VALUES
 -- Insert payments
 INSERT INTO payments (id, order_id, payment_method, amount, status, transaction_id)
 VALUES 
-    ('p47ac10b-58cc-4372-a567-0e02b2c3d479', 'e47ac10b-58cc-4372-a567-0e02b2c3d479', 'credit_card', 1499.97, 'completed', 'tx_123456789'),
-    ('p47ac10b-58cc-4372-a567-0e02b2c3d480', 'e47ac10b-58cc-4372-a567-0e02b2c3d480', 'paypal', 899.99, 'completed', 'tx_234567890'),
-    ('p47ac10b-58cc-4372-a567-0e02b2c3d481', 'e47ac10b-58cc-4372-a567-0e02b2c3d482', 'credit_card', 134.98, 'completed', 'tx_345678901');
+    ('a47ac10b-58cc-4372-a567-0e02b2c3d479', 'e47ac10b-58cc-4372-a567-0e02b2c3d479', 'credit_card', 1499.97, 'completed', 'tx_123456789'),
+    ('a47ac10b-58cc-4372-a567-0e02b2c3d480', 'e47ac10b-58cc-4372-a567-0e02b2c3d480', 'paypal', 899.99, 'completed', 'tx_234567890'),
+    ('a47ac10b-58cc-4372-a567-0e02b2c3d481', 'e47ac10b-58cc-4372-a567-0e02b2c3d482', 'credit_card', 134.98, 'completed', 'tx_345678901');
 
 -- Create function to generate a large number of products for performance testing
 CREATE OR REPLACE FUNCTION generate_test_products(num_products INTEGER) RETURNS VOID AS $$
@@ -205,13 +205,17 @@ END $$;
 DO $$
 DECLARE
     i INTEGER;
-    category_id UUID;
+    category_id INTEGER;
     category_name TEXT;
-    parent_id UUID := NULL;
+    parent_id INTEGER := NULL;
+    next_id INTEGER;
 BEGIN
+    -- Get the next ID value to start from
+    SELECT COALESCE(MAX(id), 10) + 1 INTO next_id FROM ecommerce.categories;
+    
     -- Main categories
     FOR i IN 1..10 LOOP
-        category_id := gen_random_uuid();
+        category_id := next_id + i - 1;
         category_name := CASE
             WHEN i = 1 THEN 'Electronics'
             WHEN i = 2 THEN 'Fashion'
@@ -237,12 +241,11 @@ BEGIN
     
     -- Subcategories
     FOR i IN 11..20 LOOP
-        category_id := gen_random_uuid();
+        category_id := next_id + i - 1;
         
         -- Select a random parent category
-        SELECT id INTO parent_id FROM ecommerce.categories WHERE id IN (
-            SELECT id FROM ecommerce.categories LIMIT 10
-        ) ORDER BY random() LIMIT 1;
+        SELECT id INTO parent_id FROM ecommerce.categories WHERE id BETWEEN next_id AND (next_id + 9)
+        ORDER BY random() LIMIT 1;
         
         category_name := CASE
             WHEN i = 11 THEN 'Smartphones'
@@ -277,7 +280,7 @@ DECLARE
     product_name TEXT;
     product_description TEXT;
     product_price DECIMAL(10, 2);
-    category_id UUID;
+    category_id INTEGER;
 BEGIN
     FOR i IN 1..5000 LOOP
         product_id := gen_random_uuid();
@@ -289,14 +292,15 @@ BEGIN
         SELECT id INTO category_id FROM ecommerce.categories ORDER BY random() LIMIT 1;
         
         INSERT INTO ecommerce.products (
-            id, name, description, price, image_url, category_id
+            id, name, description, price, image_url, category_id, is_active
         ) VALUES (
             product_id,
             product_name,
             product_description,
             product_price,
             'https://picsum.photos/id/' || (i % 1000) || '/400/400',
-            category_id
+            category_id,
+            TRUE
         );
     END LOOP;
 END $$;
@@ -327,16 +331,16 @@ END $$;
 DO $$
 DECLARE
     i INTEGER;
-    cart_id UUID;
-    product_id UUID;
+    v_cart_id UUID;
+    v_product_id UUID;
     quantity INTEGER;
 BEGIN
     FOR i IN 1..2000 LOOP
         -- Select a random cart
-        SELECT id INTO cart_id FROM ecommerce.shopping_cart ORDER BY random() LIMIT 1;
+        SELECT id INTO v_cart_id FROM ecommerce.shopping_cart ORDER BY random() LIMIT 1;
         
         -- Select a random product
-        SELECT id INTO product_id FROM ecommerce.products ORDER BY random() LIMIT 1;
+        SELECT id INTO v_product_id FROM ecommerce.products ORDER BY random() LIMIT 1;
         
         quantity := (random() * 5 + 1)::INTEGER;
         
@@ -346,15 +350,15 @@ BEGIN
                 id, cart_id, product_id, quantity
             ) VALUES (
                 gen_random_uuid(),
-                cart_id,
-                product_id,
+                v_cart_id,
+                v_product_id,
                 quantity
             );
         EXCEPTION WHEN unique_violation THEN
             -- If the cart already has this product, update the quantity
-            UPDATE ecommerce.cart_items 
-            SET quantity = quantity + 1
-            WHERE cart_id = cart_id AND product_id = product_id;
+            UPDATE ecommerce.cart_items ci
+            SET quantity = ci.quantity + 1
+            WHERE ci.cart_id = v_cart_id AND ci.product_id = v_product_id;
         END;
     END LOOP;
 END $$;
@@ -475,9 +479,9 @@ BEGIN
             );
         EXCEPTION WHEN unique_violation THEN
             -- If the cart already has this product, update the quantity
-            UPDATE ecommerce.cart_items 
+            UPDATE ecommerce.cart_items ci
             SET quantity = i
-            WHERE cart_id = demo_cart_id AND product_id = product_id;
+            WHERE ci.cart_id = demo_cart_id AND ci.product_id = product_id;
         END;
     END LOOP;
     

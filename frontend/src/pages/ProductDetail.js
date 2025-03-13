@@ -114,6 +114,12 @@ const ProductDetail = () => {
       return;
     }
     
+    // Check stock before making the API call
+    if (product.stock_quantity <= 0) {
+      showErrorToast('Cannot add to cart: Product is out of stock');
+      return;
+    }
+    
     setAddingToCart(true);
     
     try {
@@ -158,13 +164,21 @@ const ProductDetail = () => {
       
       let errorMessage = 'Failed to add to cart';
       
-      if (err.response?.data?.message) {
-        errorMessage += `: ${err.response.data.message}`;
+      // Handle specific error cases
+      if (err.response) {
+        const status = err.response.status;
+        const responseData = err.response.data;
+        
+        if (status === 400 && responseData.message?.includes('out of stock')) {
+          errorMessage = `This product is out of stock`;
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
       } else if (err.message) {
-        errorMessage += `: ${err.message}`;
+        errorMessage = err.message;
       }
       
-      // Show error toast instead of setting cartMessage
+      // Show error toast
       showErrorToast(errorMessage);
     } finally {
       setAddingToCart(false);
@@ -274,16 +288,22 @@ const ProductDetail = () => {
                 
                 <div className="flex space-x-4">
                   <button 
-                    className={`${addingToCart ? 'bg-blue-400' : 'bg-blue-600'} text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors`}
+                    className={`${addingToCart ? 'bg-blue-400' : (product.stock_quantity <= 0 ? 'bg-gray-400' : 'bg-blue-600')} text-white px-6 py-2 rounded-md hover:${product.stock_quantity <= 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-700'} transition-colors`}
                     onClick={addToCart}
-                    disabled={addingToCart}
+                    disabled={addingToCart || product.stock_quantity <= 0}
+                    title={product.stock_quantity <= 0 ? "This product is out of stock" : ""}
                   >
-                    {addingToCart ? 'Adding...' : 'Add to Cart'}
+                    {addingToCart ? 'Adding...' : (product.stock_quantity <= 0 ? 'Out of Stock' : 'Add to Cart')}
                   </button>
                   <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 transition-colors">
                     Add to Wishlist
                   </button>
                 </div>
+                {product.stock_quantity <= 0 && (
+                  <div className="mt-2 text-red-500 text-sm">
+                    This product is currently out of stock. Please check back later.
+                  </div>
+                )}
               </div>
             </div>
           </div>

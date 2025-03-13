@@ -59,8 +59,8 @@ module.exports = (pool) => {
   // Helper function to ensure a sample category exists
   async function ensureSampleCategoryExists() {
     try {
-      // Use a consistent UUID for the sample category
-      const sampleCategoryId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12';
+      // Use a consistent integer for the sample category
+      const sampleCategoryId = 9999;
       
       // Check if the sample category exists
       const categoryQuery = `SELECT id FROM ecommerce.categories WHERE id = $1`;
@@ -352,6 +352,14 @@ module.exports = (pool) => {
           }
         } else {
           console.log(`Product found: ${productResult.rows[0].name}`);
+          
+          // Check if product is in stock
+          if (productResult.rows[0].stock_quantity <= 0) {
+            return res.status(400).json({
+              message: 'Cannot add product to cart: Product is out of stock',
+              product: productResult.rows[0].name
+            });
+          }
         }
         
         // Get or create shopping cart

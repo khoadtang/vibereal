@@ -125,49 +125,50 @@ VALUES
 
 -- Create views for each challenge to make them easier to access
 CREATE VIEW challenge_1 AS 
-SELECT * FROM products WHERE name ILIKE '%Product 5%';
+SELECT * FROM ecommerce.products WHERE name ILIKE '%Product 5%';
 
 CREATE VIEW challenge_2 AS 
-SELECT * FROM users WHERE email = 'user100@example.com';
+SELECT * FROM ecommerce.users WHERE email = 'user100@example.com';
 
 CREATE VIEW challenge_3 AS 
 SELECT p.id, p.name, p.price, i.quantity 
-FROM products p 
-JOIN inventory i ON p.id = i.product_id 
+FROM ecommerce.products p 
+JOIN ecommerce.product_inventory i ON p.id = i.product_id 
 WHERE p.category_id = 9;
 
 CREATE VIEW challenge_4 AS 
 SELECT o.id, o.created_at, o.status, o.total_amount, u.email, COUNT(oi.id) as item_count 
-FROM orders o 
-JOIN users u ON o.user_id = u.id 
-JOIN order_items oi ON o.id = oi.order_id 
+FROM ecommerce.orders o 
+JOIN ecommerce.users u ON o.user_id = u.id 
+JOIN ecommerce.order_items oi ON o.id = oi.order_id 
 WHERE o.status = 'processing' 
 GROUP BY o.id, u.email;
 
 CREATE VIEW challenge_5 AS 
 SELECT u.username, p.name, ci.quantity, p.price 
-FROM cart_items ci 
-JOIN users u ON ci.user_id = u.id 
-JOIN products p ON ci.product_id = p.id 
-WHERE ci.user_id = 100;
+FROM ecommerce.cart_items ci 
+JOIN ecommerce.shopping_cart sc ON ci.cart_id = sc.id
+JOIN ecommerce.users u ON sc.user_id = u.id 
+JOIN ecommerce.products p ON ci.product_id = p.id 
+WHERE sc.user_id = '96a86602-f370-41f2-ad31-ab725f14e11e';
 
 CREATE VIEW challenge_6 AS 
 SELECT p.name, AVG(pr.rating) as avg_rating, COUNT(pr.id) as review_count 
-FROM products p 
-LEFT JOIN product_reviews pr ON p.id = pr.product_id 
+FROM ecommerce.products p 
+LEFT JOIN ecommerce.product_reviews pr ON p.id = pr.product_id 
 GROUP BY p.name 
 ORDER BY avg_rating DESC;
 
 CREATE VIEW challenge_7 AS 
 SELECT p.* 
-FROM products p 
+FROM ecommerce.products p 
 WHERE p.category_id = 12 
 ORDER BY p.name;
 
 CREATE VIEW challenge_8 AS 
 SELECT o.* 
-FROM orders o 
-WHERE o.user_city = 'City42';
+FROM ecommerce.orders o 
+WHERE o.shipping_city = 'City42';
 
 CREATE VIEW challenge_9 AS 
 SELECT table_name, column_name 
@@ -176,7 +177,7 @@ WHERE column_name LIKE '%_id'
 AND table_name IN ('products', 'inventory', 'cart_items', 'order_items', 'product_reviews');
 
 CREATE VIEW challenge_10 AS 
-SELECT * FROM products ORDER BY price DESC LIMIT 20 OFFSET 60;
+SELECT * FROM ecommerce.products ORDER BY price DESC LIMIT 20 OFFSET 60;
 
 -- Create a function to run EXPLAIN ANALYZE on a view
 CREATE OR REPLACE FUNCTION explain_view(view_name text) 
