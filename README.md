@@ -117,15 +117,6 @@ backend/       # Node.js API - the middleware that connects UI to DB
 database/      # SQL init scripts - where all the performance crimes happen
 ```
 
-## 📜 The Sacred Texts (Documentation)
-
-- **SETUP.md**: For when this README inevitably fails you
-- **TROUBLESHOOTING.md**: When things go wrong (and they will)
-- **docker-compose.yml**: The blueprint for your containerized chaos
-- **cleanup.sh**: Script to prepare the codebase for production
-- **optimize-screenshots.sh**: Tool to optimize screenshots for faster loading
-- **screenshots/**: Directory containing application screenshots
-
 ## 🎓 Lessons You'll Learn (The Hard Way)
 
 - Indexing isn't just for books
