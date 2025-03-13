@@ -59,18 +59,6 @@ Here's what you're getting yourself into:
 - A sense of humor (you'll need it)
 - Coffee ☕ (lots of it)
 
-### The "I Just Want to See the World Burn" Quick Start
-
-```bash
-# Clone this repository of nightmares
-git clone https://github.com/your-username/vibereal.git
-
-# Enter at your own risk
-cd vibereal
-
-# Summon the docker demons
-./start-app.sh
-```
 
 ### Accessing the Chaos
 
