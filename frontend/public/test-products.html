@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .product { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    .product h3 { margin-top: 0; }
+    #error { color: red; }
+    #loading { color: blue; }
+  </style>
+</head>
+<body>
+  <h1>Product Test Page</h1>
+  <div id="loading">Loading products...</div>
+  <div id="error" style="display: none;"></div>
+  <div id="products"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const productsContainer = document.getElementById('products');
+      const loadingElement = document.getElementById('loading');
+      const errorElement = document.getElementById('error');
+      
+      // Function to display products
+      function displayProducts(products) {
+        loadingElement.style.display = 'none';
+        
+        if (!products || products.length === 0) {
+          errorElement.textContent = 'No products found';
+          errorElement.style.display = 'block';
+          return;
+        }
+        
+        products.forEach(product => {
+          const productElement = document.createElement('div');
+          productElement.className = 'product';
+          
+          const name = product.name || 'Unknown Product';
+          const price = product.price ? parseFloat(product.price).toFixed(2) : '0.00';
+          const category = product.category_name || 'Uncategorized';
+          const description = product.description || 'No description available';
+          
+          productElement.innerHTML = `
+            <h3>${name}</h3>
+            <p><strong>Price:</strong> $${price}</p>
+            <p><strong>Category:</strong> ${category}</p>
+            <p>${description.length > 100 ? description.substring(0, 100) + '...' : description}</p>
+          `;
+          
+          productsContainer.appendChild(productElement);
+        });
+      }
+      
+      // Fetch products from API using Nginx proxy path
+      fetch('/api/products')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('API Response:', data);
+          // Check if data has a data property (pagination format)
+          const products = data.data || data;
+          displayProducts(products);
+        })
+        .catch(error => {
+          console.error('Error fetching products:', error);
+          errorElement.textContent = `Error loading products: ${error.message}`;
+          errorElement.style.display = 'block';
+          loadingElement.style.display = 'none';
+        });
+    });
+  </script>
+</body>
+</html> 

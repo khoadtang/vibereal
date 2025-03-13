@@ -1,0 +1,131 @@
+/* Toast Animation Keyframes */
+@keyframes toast-slide-in {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Confetti Animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(60px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Success Checkmark Animation */
+@keyframes check {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Toast CSS Classes */
+.toast-enter {
+  animation: toast-slide-in 0.3s ease forwards;
+}
+
+.toast-exit {
+  animation: toast-slide-out 0.3s ease forwards;
+}
+
+.toast-success {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+}
+
+.toast-error {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+}
+
+.toast-info {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+}
+
+.toast-warning {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+/* Shimmer effect for loading states */
+.shimmer {
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.2) 50%, 
+    rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Custom styles for checkmark */
+.checkmark {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: check 0.8s ease-in-out forwards;
+  animation-delay: 0.2s;
+}
+
+/* Modal Animation */
+@keyframes modal-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-enter {
+  animation: modal-fade-in 0.3s ease-out forwards;
+} 
