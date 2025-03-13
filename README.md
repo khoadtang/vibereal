@@ -1,4 +1,4 @@
-# 🚀 ViberEal: The PostgreSQL Performance Panic Room
+# 🚀 VibeReal: The Terrible E-commerce Platform
 
 ![Banner](https://picsum.photos/800/200)
 
@@ -113,9 +113,9 @@ database/      # SQL init scripts - where all the performance crimes happen
 - The importance of EXPLAIN ANALYZE (your new best friend)
 - Why database optimization should be part of initial development, not an afterthought
 
-## 🙏 Credits & Thanks
+## 🙏 Credits (Blame These People)
 
-Built with ❤️, 😭, and copious amounts of caffeinated beverages by developers who've seen things... terrible things... in production databases.
+Built with 💀, ☕, and AI-generated "vibe coding" by devs who've forgotten what human code looks like.
 
 ## ⚖️ License
 
@@ -123,4 +123,4 @@ MIT License - Feel free to use this to torture, I mean train, your team!
 
 ---
 
-> "If debugging is the process of removing bugs, then programming must be the process of putting them in." - Edsger W. Dijkstra 
+> Tools come and go, code gets deprecated, but vibe coding... vibe coding is forever." – Anonymous Developer
