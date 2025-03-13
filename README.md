@@ -1,6 +1,6 @@
 # 🚀 VibeReal: The Terrible E-commerce Platform
 
-![Banner](https://picsum.photos/800/200)
+![Banner](screenshots/header_0.png)
 
 > "Where database queries go to die... and then get resurrected!" 💀➡️😇
 
@@ -116,11 +116,3 @@ database/      # SQL init scripts - where all the performance crimes happen
 ## 🙏 Credits (Blame These People)
 
 Built with 💀, ☕, and AI-generated "vibe coding" by devs who've forgotten what human code looks like.
-
-## ⚖️ License
-
-MIT License - Feel free to use this to torture, I mean train, your team!
-
----
-
-> Tools come and go, code gets deprecated, but vibe coding... vibe coding is forever." – Anonymous Developer
