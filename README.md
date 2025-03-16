@@ -6,12 +6,14 @@
 
 ## 🤔 What Is This Madness?
 
-Welcome to the most entertaining way to discover why your database queries are crawling! ViberEal is an interactive e-commerce platform *intentionally designed to be terrible* at database performance. Think of it as a haunted house, but for SQL queries.
+**Ever wanted to tackle real-world database hiccups without the pressure?** This platform gives you the chance to dive into scenarios you might not have faced yet. As you troubleshoot and fix issues, you'll see the impact right away, giving you that satisfying "aha!" moment as you turn this platform from a performance mess into a smooth-running machine. Along the way, you'll pick up valuable insights and experience that will gear you up for real-world challenges.
+
+VibeReal is an interactive e-commerce playground designed to stretch your database performance skills. It's intentionally crafted to be a bit of a mess, offering a unique chance to learn and improve.
 
 **Perfect for:**
-- Junior devs who've never seen a production fire 🔥
-- Mid-level engineers who want to flex their optimization muscles 💪
-- Senior devs with PTSD from that one time the database went down during Black Friday sales 😱
+- Developers eager to experience real-world database performance challenges in a safe and controlled environment.
+- Those looking to enhance their skills by encountering and solving issues they might not face in smaller projects or freelance/outsource roles.
+- Anyone interested in learning how to optimize database queries and improve application performance through hands-on practice.
 
 ## 🎮 How to Play This Horrible Game
 
@@ -23,7 +25,6 @@ Welcome to the most entertaining way to discover why your database queries are c
 
 - **Real-World E-commerce Hell**: A complete shopping platform with products, orders, carts, and users... all waiting to test your patience!
 - **Performance Metrics**: Watch in horror as simple queries take longer than your coffee break
-- **Interactive Challenges**: 10+ scenarios designed to make you question your career choices
 - **Before & After**: See your optimization magic work in real-time (or cry trying)
 - **Guided Solutions**: When you're ready to wave the white flag, we've got your back
 
@@ -63,7 +64,7 @@ Here's what you're getting yourself into:
 ### Accessing the Chaos
 
 - 🛍️ **Shopping Site**: [http://localhost:8080](http://localhost:8080)
-- 🔌 **API**: [http://localhost:3000](http://localhost:3000)
+- 🔌 **API**: [http://localhost:3000](http://localhost:3000/api)
 - 🔍 **PgAdmin**: [http://localhost:5050](http://localhost:5050) (email: admin@pgperformance.com, password: admin)
 - 🗄️ **Database**: `postgres:5432` (username: postgres, password: postgres)
 
