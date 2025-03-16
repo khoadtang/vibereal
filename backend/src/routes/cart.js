@@ -209,6 +209,17 @@ module.exports = (pool) => {
       } catch (dbError) {
         console.error('Database error when fetching cart:', dbError);
         
+        // Check if this is a connection error
+        if (dbError.code === 'ECONNREFUSED' || dbError.message.includes('connect')) {
+          return res.status(503).json({
+            items: [],
+            total: 0,
+            error: 'Database is initializing',
+            message: 'The database is currently initializing. Please try again in a few moments.',
+            status: 'initializing'
+          });
+        }
+        
         // Return empty cart instead of failing
         res.json({
           items: [],
@@ -218,6 +229,18 @@ module.exports = (pool) => {
       }
     } catch (err) {
       console.error('General error in cart route:', err);
+      
+      // Check if this is a connection error
+      if (err.code === 'ECONNREFUSED' || err.message.includes('connect')) {
+        return res.status(503).json({
+          items: [],
+          total: 0,
+          error: 'Database is initializing',
+          message: 'The database is currently initializing. Please try again in a few moments.',
+          status: 'initializing'
+        });
+      }
+      
       res.status(500).json({ 
         message: 'An error occurred while fetching your cart',
         error: err.message,

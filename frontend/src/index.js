@@ -54,6 +54,8 @@
 // Import network interceptor first to prevent placeholder.com requests
 // This MUST be the first import to intercept all network requests
 import './utils/networkInterceptor';
+// Import API interceptor to handle database connection errors
+import './utils/apiInterceptor';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -64,6 +66,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 // Import debug helper to make it available throughout the app
 import './utils/debugHelper';
+
+// Initialize API interceptors
+import { initApiInterceptors } from './utils/apiInterceptor';
+initApiInterceptors();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

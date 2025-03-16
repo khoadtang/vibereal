@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
+const { dbStatusMiddleware } = require('./middleware/dbStatusMiddleware');
 
 // Load environment variables
 dotenv.config();
@@ -25,6 +26,9 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Database status middleware - apply to all API routes
+app.use('/api', dbStatusMiddleware(pool));
+
 // Routes
 app.use('/api/products', require('./routes/products')(pool));
 app.use('/api/users', require('./routes/users')(pool));
@@ -33,6 +37,7 @@ app.use('/api/orders', require('./routes/orders')(pool));
 app.use('/api/metrics', require('./routes/metrics')(pool));
 app.use('/api/challenges', require('./routes/challenges')(pool));
 app.use('/api/reports', require('./routes/reports')(pool));
+app.use('/api/db-status', require('./routes/db-status')(pool));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -49,7 +54,9 @@ app.get('/api', (req, res) => {
       cart: '/api/cart',
       orders: '/api/orders',
       metrics: '/api/metrics',
-      challenges: '/api/challenges'
+      challenges: '/api/challenges',
+      reports: '/api/reports',
+      dbStatus: '/api/db-status'
     }
   });
 });
@@ -57,6 +64,16 @@ app.get('/api', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
+  
+  // Check if error is related to database connection
+  if (err.code === 'ECONNREFUSED' || err.code === '57P01' || err.message.includes('database')) {
+    return res.status(503).json({
+      error: 'Database Unavailable',
+      message: 'The database is currently initializing or unavailable',
+      retryAfter: 5
+    });
+  }
+  
   res.status(500).json({
     error: 'Internal Server Error',
     message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'

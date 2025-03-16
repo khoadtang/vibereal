@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useToast } from '../components/ToastProvider';
 import AddToCartModal from '../components/AddToCartModal';
+import withDatabaseCheck from '../hocs/withDatabaseCheck';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -328,4 +329,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail; 
+export default withDatabaseCheck(ProductDetail); 

@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import SQLCodeBlock from '../components/SQLCodeBlock';
 import { useToast } from '../components/ToastProvider';
 import CheckoutSuccessModal from '../components/CheckoutSuccessModal';
+import { useDatabaseConnection } from '../contexts/DatabaseConnectionContext';
+import withDatabaseCheck from '../hocs/withDatabaseCheck';
 
-const ShoppingCart = () => {
+const ShoppingCart = ({ databaseStatus }) => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -73,6 +75,7 @@ const ShoppingCart = () => {
   }, []);
   
   useEffect(() => {
+    // The withDatabaseCheck HOC ensures we only get here if the database is connected
     fetchCartItems();
   }, []);
   
@@ -109,8 +112,18 @@ const ShoppingCart = () => {
     }
   };
   
+  // Check database connection before any API action
+  const checkDatabaseBeforeAction = (action) => {
+    if (!databaseStatus.isConnected) {
+      setError('This action is unavailable while the database is initializing. Please try again later.');
+      return false;
+    }
+    return true;
+  };
+  
   const updateQuantity = async (productId, newQuantity) => {
     if (newQuantity < 1) return;
+    if (!checkDatabaseBeforeAction('update quantity')) return;
     
     try {
       console.log(`Updating quantity for product ${productId} to ${newQuantity}`);
@@ -150,6 +163,8 @@ const ShoppingCart = () => {
   };
   
   const removeItem = async (productId) => {
+    if (!checkDatabaseBeforeAction('remove item')) return;
+    
     try {
       console.log(`Removing product ${productId} from cart`);
       
@@ -230,6 +245,8 @@ WHERE sc.user_id = '${userId}';
   `;
 
   const proceedToCheckout = async () => {
+    if (!checkDatabaseBeforeAction('checkout')) return;
+    
     if (cartItems.length === 0) {
       setError('Your cart is empty. Add some items before checking out.');
       return;
@@ -326,9 +343,38 @@ WHERE sc.user_id = '${userId}';
           Your Shopping Cart
         </h1>
         
-        {/* Performance Challenge Section removed */}
+        {/* Database Initialization Message */}
+        {!databaseStatus.isConnected && (
+          <div className="mb-6 p-6 bg-amber-50 border border-amber-200 rounded-xl shadow-md">
+            <div className="flex items-center mb-4">
+              <div className="rounded-full bg-amber-100 p-2 mr-3">
+                <svg className="w-6 h-6 text-amber-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-amber-800">
+                {databaseStatus.isInitializing ? 'Database is initializing' : 'Database connection error'}
+              </h3>
+            </div>
+            <p className="text-amber-700 mb-3">
+              {databaseStatus.isInitializing 
+                ? `We're setting up the database (${databaseStatus.progress}% complete). Your cart will be available shortly.` 
+                : 'We can\'t connect to the database right now. Your cart is temporarily unavailable.'}
+            </p>
+            <div className="w-full bg-amber-200 rounded-full h-2.5 mb-4">
+              <div 
+                className="bg-amber-500 h-2.5 rounded-full transition-all duration-500 ease-in-out" 
+                style={{ width: `${databaseStatus.progress}%` }}
+              ></div>
+            </div>
+            <p className="text-sm text-amber-600">
+              {databaseStatus.message || 'Please wait while we complete this process...'}
+            </p>
+          </div>
+        )}
         
-        {executionTime && (
+        {/* Only show execution time if database is connected */}
+        {databaseStatus.isConnected && executionTime && (
           <div className={`mb-6 p-4 rounded-xl shadow-md ${parseFloat(executionTime) > 40 ? 'bg-red-50 border border-red-300' : 'bg-green-50 border border-green-300'} flex items-center justify-between`}>
             <div>
               <p className="font-semibold flex items-center">
@@ -568,13 +614,30 @@ WHERE sc.user_id = '${userId}';
             </div>
           ) : (
             <div className="text-center py-20 bg-white rounded-xl shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              <p className="text-xl text-gray-600 mb-6">Your cart is empty</p>
-              <a href="/products" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                Continue Shopping
-              </a>
+              {databaseStatus.isConnected ? (
+                // Empty cart message (when database is connected)
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <p className="text-xl text-gray-600 mb-6">Your cart is empty</p>
+                  <a href="/products" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Continue Shopping
+                  </a>
+                </>
+              ) : (
+                // Database not connected message
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-amber-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-xl text-amber-600 mb-2">Cart Temporarily Unavailable</p>
+                  <p className="text-gray-600 mb-6 max-w-md mx-auto">The shopping cart is currently unavailable while the database is being set up. Please check back in a few moments.</p>
+                  <a href="/" className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Go to Homepage
+                  </a>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -633,4 +696,5 @@ WHERE sc.user_id = '${userId}';
   );
 };
 
-export default ShoppingCart; 
+// Export the component wrapped with the withDatabaseCheck HOC
+export default withDatabaseCheck(ShoppingCart); 

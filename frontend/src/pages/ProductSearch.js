@@ -7,6 +7,8 @@ import { debugHelpers } from '../utils/debugHelper';
 import { getProductImage, formatPrice, getRatingInfo, truncateText } from '../utils/productUtils';
 import { useToast } from '../components/ToastProvider';
 import AddToCartModal from '../components/AddToCartModal';
+// Add import for withDatabaseCheck
+import withDatabaseCheck from '../hocs/withDatabaseCheck';
 
 const ProductSearch = () => {
   const [products, setProducts] = useState([]);
@@ -531,4 +533,5 @@ LIMIT 20;
   );
 };
 
-export default ProductSearch; 
+// Export the component wrapped with the withDatabaseCheck HOC
+export default withDatabaseCheck(ProductSearch); 
