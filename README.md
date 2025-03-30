@@ -1,4 +1,4 @@
-# 🚀 VibeReal: The Terrible E-commerce Platform
+# 🚀 VibeReal: The Terrible Shop Platform
 
 ![Banner](screenshots/header_0.png)
 
@@ -8,7 +8,7 @@
 
 **Ever wanted to tackle real-world database hiccups without the pressure?** This platform gives you the chance to dive into scenarios you might not have faced yet. As you troubleshoot and fix issues, you'll see the impact right away, giving you that satisfying "aha!" moment as you turn this platform from a performance mess into a smooth-running machine. Along the way, you'll pick up valuable insights and experience that will gear you up for real-world challenges.
 
-VibeReal is an interactive e-commerce playground designed to stretch your database performance skills. It's intentionally crafted to be a bit of a mess, offering a unique chance to learn and improve.
+VibeReal is an interactive shop playground designed to stretch your database performance skills. It's intentionally crafted to be a bit of a mess, offering a unique chance to learn and improve.
 
 **Perfect for:**
 - Developers eager to experience real-world database performance challenges in a safe and controlled environment.
@@ -23,7 +23,7 @@ VibeReal is an interactive e-commerce playground designed to stretch your databa
 
 ## ✨ Features (or "Things That Will Break Your Soul")
 
-- **Real-World E-commerce Hell**: A complete shopping platform with products, orders, carts, and users... all waiting to test your patience!
+- **Real-World Shop Hell**: A complete shopping platform with products, orders, carts, and users... all waiting to test your patience!
 - **Performance Metrics**: Watch in horror as simple queries take longer than your coffee break
 - **Before & After**: See your optimization magic work in real-time (or cry trying)
 - **Guided Solutions**: When you're ready to wave the white flag, we've got your back
